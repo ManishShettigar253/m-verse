@@ -9,8 +9,8 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="logo">
-        mVerse
+      <div>
+        <Link className="logo" to="/" onClick={toggleMenu}>mVerse</Link>
       </div>
 
       {/* Hamburger button for mobile and tablet view */}
