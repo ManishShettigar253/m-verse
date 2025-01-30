@@ -4,8 +4,6 @@ const getLLMResponse = async (req, res) => {
   const { input } = req.body; // Get the input from the request body
 
   try {
-    console.log("Received input:", input);
-    console.log("Sending request to Gemini API...");
 
     // Call Gemini API with the correct endpoint and payload
     const response = await axios.post(
@@ -25,9 +23,6 @@ const getLLMResponse = async (req, res) => {
         }
       }
     );
-
-    // Log the response for debugging
-    console.log("Gemini API response:", response.data);
 
     // Extract the text from the response
     const generatedText = response.data.candidates[0]?.content?.parts[0]?.text || "No response from Gemini.";
