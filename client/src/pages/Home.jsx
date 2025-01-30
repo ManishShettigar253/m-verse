@@ -8,8 +8,8 @@ function Home() {
   return (
     <div className="home-container">
       <div className="welcome-section">
-        <h1>Welcome to My LLM App</h1>
-        <p>Your personalized AI assistant is just a click away.</p>
+        <h1>Welcome to mVerse</h1>
+        <p>Where Ideas and the Universe Collide.</p>
         <button onClick={() => navigate("/chat")} className="enter-chat-btn">
           Start Chat
         </button>
