@@ -4,9 +4,9 @@
 ## Setup Instructions
 
 1. **Install Dependencies**:
-    1. To install the necessary dependencies, run the following command:
-    2. terminal 1 frontend : mverse/client % npm install
-    3. terminal 2 backend : mverse/server % npm install
+    To install the necessary dependencies, run the following command:
+    1. terminal 1 frontend : mverse/client % npm install
+    2. terminal 2 backend : mverse/server % npm install
     
 
 2. **Environment File Creation**:
