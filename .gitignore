@@ -3,7 +3,8 @@
 /server/node_modules
 
 # Ignore environment variable files
-.env
+/client/.env
+/server/.env
 
 # Ignore log files
 *.log

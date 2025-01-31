@@ -19,7 +19,7 @@ function Chat() {
         const response = await axios.post("http://localhost:5000/api/llm", { input: userInput });
 
         // Extract the response text from the backend's response
-        const geminiText = response.data.text || "Sorry, no response from Gemini.";  // Fallback message
+        const geminiText = response.data.text || "Sorry, no response from Gemini."; // Fallback message
 
         // Add the Gemini response message
         setMessages((prevMessages) => [
@@ -36,6 +36,11 @@ function Chat() {
 
       setLoading(false);
     }
+  };
+
+  // Function to clear the chat messages
+  const clearMessages = () => {
+    setMessages([]);
   };
 
   return (
@@ -57,6 +62,10 @@ function Chat() {
           />
           <button onClick={handleSendMessage} disabled={loading}>
             {loading ? "Sending..." : "Send"}
+          </button>
+          {/* Clear Chat Button */}
+          <button onClick={clearMessages} className="clear-btn">
+            Clear Chat
           </button>
         </div>
       </div>

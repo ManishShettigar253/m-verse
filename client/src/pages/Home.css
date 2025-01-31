@@ -15,6 +15,7 @@
   }
   
   .welcome-section h1 {
+    margin-top: 10px;
     font-size: 3rem;
     color: #333;
   }
