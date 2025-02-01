@@ -7,6 +7,8 @@ function Chat() {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const backendUrl = process.env.REACT_APP_BACKEND_BASEURL; // Access the environment variable
+
   const handleSendMessage = async () => {
     if (userInput.trim()) {
       const newMessage = { sender: "user", text: userInput };
@@ -15,8 +17,8 @@ function Chat() {
       setLoading(true);
 
       try {
-        // Make the request to the backend
-        const response = await axios.post("http://localhost:5000/api/llm", { input: userInput });
+        // Use the backend URL from the environment variable
+        const response = await axios.post(`${backendUrl}/api/llm`, { input: userInput });
 
         // Extract the response text from the backend's response
         const geminiText = response.data.text || "Sorry, no response from Gemini."; // Fallback message
