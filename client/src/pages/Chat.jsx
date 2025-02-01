@@ -15,30 +15,26 @@ function Chat() {
       setMessages([...messages, newMessage]);
       setUserInput("");
       setLoading(true);
-
+  
       try {
-        // Use the backend URL from the environment variable
-        const response = await axios.post(`${backendUrl}/api/llm`, { input: userInput });
-
-        // Extract the response text from the backend's response
-        const geminiText = response.data.text || "Sorry, no response from Gemini."; // Fallback message
-
-        // Add the Gemini response message
+        const response = await axios.post(`${backendUrl}/api/chat`, {
+          message: userInput,
+        });
+  
+        const botMessage = { sender: "bot", text: response.data.reply };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } catch (error) {
+        console.error("Error:", error);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { sender: "gemini", text: geminiText },
+          { sender: "bot", text: "Oops! Something went wrong." },
         ]);
-      } catch (err) {
-        console.error("Error in chat:", err);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "gemini", text: "Sorry, something went wrong!" },
-        ]);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     }
   };
+  
 
   // Function to clear the chat messages
   const clearMessages = () => {
