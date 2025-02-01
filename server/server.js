@@ -5,7 +5,11 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 dotenv.config();
-app.use(cors());
+app.use(cors({
+  origin : ["https://localhost:3000"],
+  methods : ["GET", "POST"],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
