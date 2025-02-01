@@ -22,7 +22,7 @@ const About = () => {
         <div className="about-header">
           <h1>Welcome to mVerse</h1>
                 <p className="intro">
-                    LLM Connect is an advanced AI-powered chat application built using React, Node.js, and Gemini's cutting-edge language models. It offers a seamless and interactive experience, allowing users to engage in intelligent conversations, get personalized responses, and explore the power of AI in real-time. As I continue to develop the app, I’m focused on enhancing its capabilities, expanding features, and improving the overall user experience.
+                    mVerse is an advanced AI-powered chat application built using React, Node.js, and Gemini's cutting-edge language models. It offers a seamless and interactive experience, allowing users to engage in intelligent conversations, get personalized responses, and explore the power of AI in real-time. As I continue to develop the app, I’m focused on enhancing its capabilities, expanding features, and improving the overall user experience.
                 </p>
         </div>
 
