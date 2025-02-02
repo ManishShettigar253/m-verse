@@ -31,7 +31,7 @@ const About = () => {
             <h2>Our Objectives</h2>
             <ul>
               <li>Well Versed LLM Application</li>
-              <li>Provide a simple interface to add, update, and delete books.</li>
+              <li>Provide a simple interface to chat with LLM / Bot</li>
               <li>Ensure scalability and fast performance with Latest Tech stack.</li>
             </ul>
           </div>
