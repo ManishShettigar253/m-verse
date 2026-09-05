@@ -19,11 +19,24 @@
       "dest": "server/server.js"
     },
     {
-      "handle": "filesystem"
+      "src": "/static/(.*)",
+      "dest": "/client/static/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/client/favicon.ico"
+    },
+    {
+      "src": "/favicon.svg",
+      "dest": "/client/favicon.svg"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/client/manifest.json"
     },
     {
       "src": "/(.*)",
-      "dest": "client/index.html"
+      "dest": "/client/index.html"
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "short_name": "mVerse",
+  "name": "mVerse Intelligence Workspace",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#080b11",
+  "background_color": "#080b11"
+}
