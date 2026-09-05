@@ -1,58 +1,159 @@
-/* src/pages/Home.css */
-.home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f0f4f8;
-    font-family: 'Arial', sans-serif;
+/* Home.css - Mobile First Minimalist Launchpad */
+
+.home-clean-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.home-badge-minimal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--accent-mint-light);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1.25rem;
+}
+
+.status-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-mint);
+}
+
+.home-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+  line-height: 1.12;
+}
+
+.home-hero-subtitle {
+  font-size: clamp(0.88rem, 3vw, 1.05rem);
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+  max-width: 420px;
+  line-height: 1.45;
+}
+
+/* Prompt Box */
+.home-prompt-box {
+  width: 100%;
+  max-width: 540px;
+  margin-bottom: 1.25rem;
+}
+
+.home-prompt-form {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.45rem 0.35rem 1.1rem;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all var(--transition-fast);
+}
+
+.home-prompt-form:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-glow);
+}
+
+.home-prompt-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #ffffff;
+  padding: 0.4rem 0;
+  min-width: 0; /* Prevents overflow */
+}
+
+.home-prompt-input::placeholder {
+  color: var(--text-muted);
+}
+
+.home-submit-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #090a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.home-submit-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.home-submit-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.home-submit-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* Quick Pills */
+.quick-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.quick-pill-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.quick-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: var(--border-light);
+}
+
+.quick-pill-btn:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .home-clean-container {
+    padding: 3rem 1.5rem;
   }
-  
-  .welcome-section {
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  
-  .welcome-section h1 {
-    margin-top: 10px;
-    font-size: 3rem;
-    color: #333;
-  }
-  
-  .welcome-section p {
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
-  .enter-chat-btn {
-    background-color: #3b82f6;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  .enter-chat-btn:hover {
-    background-color: #2563eb;
-  }
-  
-  .llm-response-section {
-    margin-top: 50px;
-    text-align: center;
-  }
-  
-  .fancy-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-  }
-  
+}

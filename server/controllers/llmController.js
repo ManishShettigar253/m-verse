@@ -1,38 +1,43 @@
 const axios = require("axios");
 
 const getLLMResponse = async (req, res) => {
-  const { input } = req.body; // Get the input from the request body
+  const { input } = req.body;
 
   try {
+    const model = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
-    // Call Gemini API with the correct endpoint and payload
+    // Call generative language endpoint with Gemini 3.6 Flash
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         contents: [
           {
             parts: [
-              { text: input } // Pass the input as the text for the Gemini model
+              { text: input }
             ]
           }
         ]
       },
       {
         headers: {
-          "Content-Type": "application/json" // Set content type to JSON
+          "Content-Type": "application/json"
         }
       }
     );
 
-    // Extract the text from the response
-    const generatedText = response.data.candidates[0]?.content?.parts[0]?.text || "No response from Gemini.";
+    // Extract generated text from response
+    const generatedText =
+      response.data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response generated from mVerse Intelligence.";
 
-    // Send the generated text to the frontend
     res.json({ text: generatedText });
-
   } catch (error) {
-    console.error("Error from Gemini API:", error);
-    res.status(500).send("Error with Gemini API");
+    const errorMsg = error?.response?.data?.error?.message || error.message;
+    console.error("Error from LLM engine:", error?.response?.data || error.message);
+    res.status(500).json({
+      text: `mVerse Engine notice: ${errorMsg}`,
+      error: errorMsg,
+    });
   }
 };
 
