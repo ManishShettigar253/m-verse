@@ -38,7 +38,7 @@ app.get("/api", (req, res) => {
 });
 
 // Server start (local development)
-if (!process.env.VERCEL) {
+if (require.main === module && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5001;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
