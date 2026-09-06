@@ -721,12 +721,50 @@
    RESPONSIVE MEDIA QUERIES (Mobile Drawer vs Desktop Sidebar)
    ============================================================================== */
 @media (max-width: 860px) {
+  .chat-layout-wrapper {
+    padding: 0;
+    gap: 0;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+  }
+
+  .chat-card-shell {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .chat-clean-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding: 0.65rem 0.85rem;
+    background: rgba(12, 14, 20, 0.98);
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .chat-sidebar-toggle-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+
   .chat-sidebar-panel {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 285px;
+    width: 290px;
     z-index: 100;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
     box-shadow: 6px 0 28px rgba(0, 0, 0, 0.7);
@@ -742,8 +780,16 @@
     display: flex;
   }
 
+  .chat-header-new-btn {
+    padding: 0.35rem 0.65rem;
+  }
+
   .chat-header-new-btn .header-btn-text {
     display: none;
+  }
+
+  .chat-scroll-area {
+    padding: 0.85rem 0.75rem;
   }
 }
 

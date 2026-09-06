@@ -29,6 +29,7 @@
 
 .main-content.chat-main-content {
   flex: 1;
+  min-height: 0;
   height: calc(100vh - 56px);
   height: calc(100dvh - 56px);
   overflow: hidden;
