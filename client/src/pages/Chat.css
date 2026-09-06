@@ -307,7 +307,9 @@
 .chat-clean-header {
   position: sticky;
   top: 0;
-  z-index: 101;
+  left: 0;
+  right: 0;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -317,6 +319,7 @@
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
+  will-change: transform;
 }
 
 .chat-header-left {
@@ -741,12 +744,15 @@
   .chat-clean-header {
     position: sticky;
     top: 0;
-    z-index: 101;
+    left: 0;
+    right: 0;
+    z-index: 9999;
     padding: 0.65rem 0.85rem;
     background: rgba(12, 14, 20, 0.98);
     border-bottom: 1px solid var(--border-subtle);
     flex-shrink: 0;
     width: 100%;
+    will-change: transform;
   }
 
   .chat-sidebar-toggle-btn {
