@@ -284,12 +284,16 @@ function Chat() {
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
   const loadingRef = useRef(false);
-  const initialPromptProcessed = useRef(false);
   const chatsRef = useRef(chats);
+  const activeChatIdRef = useRef(activeChatId);
 
   useEffect(() => {
     chatsRef.current = chats;
   }, [chats]);
+
+  useEffect(() => {
+    activeChatIdRef.current = activeChatId;
+  }, [activeChatId]);
 
   // Auto-expanding textarea height adjustment (1 line up to 160px)
   const adjustTextareaHeight = useCallback(() => {
@@ -389,76 +393,35 @@ function Chat() {
   }, []);
 
   // Stable send prompt function with conversational memory
-  const sendPrompt = useCallback(async (promptText) => {
-    const textToSend = typeof promptText === "string" ? promptText.trim() : "";
-    if (!textToSend || loadingRef.current) return;
+  const sendPrompt = useCallback(
+    async (promptText, explicitTargetId = null) => {
+      const textToSend = typeof promptText === "string" ? promptText.trim() : "";
+      if (!textToSend || loadingRef.current) return;
 
-    // Retrieve recent conversation history for memory and context connection
-    const currentChat =
-      (chatsRef.current || []).find((c) => c.id === activeChatId) ||
-      (chatsRef.current || [])[0];
-    const priorHistory = (currentChat?.messages || [])
-      .filter((m) => m && m.text && !m.text.startsWith("**Unable to reach backend service"))
-      .slice(-10)
-      .map((m) => ({
-        sender: m.sender,
-        text: m.text,
-      }));
+      const targetId = explicitTargetId || activeChatIdRef.current;
 
-    const userMessage = { sender: "user", text: textToSend };
-    loadingRef.current = true;
-    setLoading(true);
+      // Retrieve recent conversation history for memory and context connection
+      const currentChat =
+        (chatsRef.current || []).find((c) => c.id === targetId) ||
+        (chatsRef.current || [])[0];
+      const priorHistory = (currentChat?.messages || [])
+        .filter((m) => m && m.text && !m.text.startsWith("**Unable to reach backend service"))
+        .slice(-10)
+        .map((m) => ({
+          sender: m.sender,
+          text: m.text,
+        }));
 
-    // Update active chat with user message and dynamically synthesize title
-    setChats((prev) =>
-      prev.map((chat) => {
-        if (chat.id === activeChatId) {
-          const updatedMessages = [...chat.messages, userMessage];
-          const updatedTitle = synthesizeChatTitle(updatedMessages);
-          return {
-            ...chat,
-            title: updatedTitle,
-            updatedAt: Date.now(),
-            messages: updatedMessages,
-          };
-        }
-        return chat;
-      })
-    );
+      const userMessage = { sender: "user", text: textToSend };
+      loadingRef.current = true;
+      setLoading(true);
 
-    try {
-      const response = await axios.post(`${backendUrl}/api/llm`, {
-        input: textToSend,
-        history: priorHistory,
-      });
-
-      const botText = response.data?.text || "No response received from mVerse.";
-      const assistantMessage = { sender: "assistant", text: botText };
-
-      // Update active chat with assistant response and smart title
+      // Update active chat with user message and dynamically synthesize title
       setChats((prev) =>
         prev.map((chat) => {
-          if (chat.id === activeChatId) {
-            const updatedMessages = [...chat.messages, assistantMessage];
+          if (chat.id === targetId) {
+            const updatedMessages = [...chat.messages, userMessage];
             const updatedTitle = synthesizeChatTitle(updatedMessages);
-
-            // Optional background AI title refinement (non-blocking)
-            axios
-              .post(`${backendUrl}/api/llm/title`, {
-                messages: updatedMessages,
-              })
-              .then((titleRes) => {
-                const refined = titleRes.data?.title?.trim();
-                if (refined && refined.split(/\s+/).length <= 4 && refined !== "General Chat") {
-                  setChats((current) =>
-                    current.map((c) =>
-                      c.id === activeChatId ? { ...c, title: refined } : c
-                    )
-                  );
-                }
-              })
-              .catch(() => {});
-
             return {
               ...chat,
               title: updatedTitle,
@@ -469,32 +432,78 @@ function Chat() {
           return chat;
         })
       );
-    } catch (err) {
-      console.error("Error communicating with backend:", err);
-      const serverMsg = err.response?.data?.text || err.response?.data?.error;
-      const errorMessage = {
-        sender: "assistant",
-        text:
-          serverMsg ||
-          "**Unable to reach backend service.**\n\nIf testing locally, please ensure the backend is running (`node server.js` on port 5001). In production on Vercel, check your server status.",
-      };
-      setChats((prev) =>
-        prev.map((chat) => {
-          if (chat.id === activeChatId) {
-            return {
-              ...chat,
-              messages: [...chat.messages, errorMessage],
-              updatedAt: Date.now(),
-            };
-          }
-          return chat;
-        })
-      );
-    } finally {
-      loadingRef.current = false;
-      setLoading(false);
-    }
-  }, [backendUrl, activeChatId]);
+
+      try {
+        const response = await axios.post(`${backendUrl}/api/llm`, {
+          input: textToSend,
+          history: priorHistory,
+        });
+
+        const botText = response.data?.text || "No response received from mVerse.";
+        const assistantMessage = { sender: "assistant", text: botText };
+
+        // Update active chat with assistant response and smart title
+        setChats((prev) =>
+          prev.map((chat) => {
+            if (chat.id === targetId) {
+              const updatedMessages = [...chat.messages, assistantMessage];
+              const updatedTitle = synthesizeChatTitle(updatedMessages);
+
+              // Optional background AI title refinement (non-blocking)
+              axios
+                .post(`${backendUrl}/api/llm/title`, {
+                  messages: updatedMessages,
+                })
+                .then((titleRes) => {
+                  const refined = titleRes.data?.title?.trim();
+                  if (refined && refined.split(/\s+/).length <= 4 && refined !== "General Chat") {
+                    setChats((current) =>
+                      current.map((c) =>
+                        c.id === targetId ? { ...c, title: refined } : c
+                      )
+                    );
+                  }
+                })
+                .catch(() => {});
+
+              return {
+                ...chat,
+                title: updatedTitle,
+                updatedAt: Date.now(),
+                messages: updatedMessages,
+              };
+            }
+            return chat;
+          })
+        );
+      } catch (err) {
+        console.error("Error communicating with backend:", err);
+        const serverMsg = err.response?.data?.text || err.response?.data?.error;
+        const errorMessage = {
+          sender: "assistant",
+          text:
+            serverMsg ||
+            "**Unable to reach backend service.**\n\nIf testing locally, please ensure the backend is running (`node server.js` on port 5001). In production on Vercel, check your server status.",
+        };
+        setChats((prev) =>
+          prev.map((chat) => {
+            if (chat.id === targetId) {
+              return {
+                ...chat,
+                messages: [...chat.messages, errorMessage],
+                updatedAt: Date.now(),
+              };
+            }
+            return chat;
+          })
+        );
+      } finally {
+        loadingRef.current = false;
+        setLoading(false);
+      }
+    },
+    [backendUrl]
+  );
 
   // Handle form submission
   const handleFormSubmit = (e) => {
@@ -508,24 +517,34 @@ function Chat() {
     sendPrompt(text);
   };
 
-  // If redirected from Home page with a query, auto-send it strictly once
+  // If redirected from Home page with a query, auto-send it seamlessly
   useEffect(() => {
     const initial = location.state?.initialPrompt;
-    if (initial && !initialPromptProcessed.current) {
-      initialPromptProcessed.current = true;
-      navigate(location.pathname, { replace: true, state: {} });
-      if (activeChat && activeChat.messages.length > 0) {
+    if (initial && typeof initial === "string" && initial.trim()) {
+      // Clear navigation state immediately so page refresh doesn't resend
+      navigate(location.pathname, { replace: true, state: null });
+
+      const allChats = chatsRef.current || [];
+      const currentActive =
+        allChats.find((c) => c.id === activeChatIdRef.current) || allChats[0];
+
+      let targetSessionId;
+      // If current active chat already has messages, create a fresh session
+      if (currentActive && currentActive.messages && currentActive.messages.length > 0) {
         const fresh = createDefaultSession();
+        targetSessionId = fresh.id;
+        chatsRef.current = [fresh, ...allChats];
         setChats((prev) => [fresh, ...prev]);
         setActiveChatId(fresh.id);
-        setTimeout(() => {
-          sendPrompt(initial);
-        }, 50);
+        activeChatIdRef.current = fresh.id;
       } else {
-        sendPrompt(initial);
+        targetSessionId = currentActive ? currentActive.id : activeChatIdRef.current;
       }
+
+      // Immediately execute the prompt for the target session
+      sendPrompt(initial.trim(), targetSessionId);
     }
-  }, [location.state, location.pathname, navigate, activeChat, sendPrompt]);
+  }, [location.state, location.pathname, navigate, sendPrompt]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

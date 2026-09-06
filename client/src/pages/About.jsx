@@ -19,7 +19,7 @@ const About = () => {
     github: "https://github.com/ManishShettigar253",
     instagram:
       "https://www.instagram.com/manish__shettigar/profilecard/?igsh=aGlwemQwdzc2N3g2",
-    youtube: "https://www.youtube.com/@wanderlustEngineer253",
+    youtube: "https://www.youtube.com/@manish.vlogsssss",
     portfolio: "https://manishshettigar253.github.io/Manish_Portfolio/",
   };
 
