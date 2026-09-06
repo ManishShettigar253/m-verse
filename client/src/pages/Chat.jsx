@@ -151,25 +151,53 @@ const FormattedMessage = ({ content }) => {
   );
 };
 
-// Title synthesis helpers: extract concise, understandable 2-4 word topic titles
+// Generalized 2-3 word intent and topic patterns
+const INTENT_PATTERNS = [
+  { regex: /^(hi+|hey+|hello+|howdy|sup|hola|yo)\b/i, title: "General Greeting" },
+  { regex: /^(how are you|how do you do|what(\x27s|\x20is)\s+up|how(\x27s|\x20is)\s+it\s+going)/i, title: "Casual Chat" },
+  { regex: /\b(joke|funny|humor|make me laugh|pun)\b/i, title: "Humor & Jokes" },
+  { regex: /\b(recipe|cook|bake|food|pasta|dish|ingredient|cuisine)\b/i, title: "Cooking & Recipes" },
+  {
+    regex: /\b(movie|film|cinema|web\s*series|show|episode|season|netflix|actor|director)\b/i,
+    handler: (txt) => {
+      const match = txt.match(/\b(tamil|hindi|telugu|korean|anime|sci-fi|horror|thriller|comedy|drama|action)\b/i);
+      return match ? `${match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase()} Web Series` : "Film & Series";
+    }
+  },
+  { regex: /\b(poem|poetry|rhyme|haiku|ballad|verse)\b/i, title: "Creative Poetry" },
+  { regex: /\b(story|fiction|narrative|tale)\b/i, title: "Creative Story" },
+  { regex: /\b(saas|startup|business|entrepreneur|revenue|monetiz)\b/i, title: "Business & SaaS" },
+  { regex: /\b(react|vue|angular|svelte|next\.?js|vite)\b/i, title: "React Development" },
+  { regex: /\b(quantum|qubit|superposition|physics|relativity)\b/i, title: "Quantum Physics" },
+  {
+    regex: /\b(api|rest|graphql|backend|microservice|database|sql|mongodb)\b/i,
+    title: "Backend & APIs"
+  },
+  {
+    regex: /\b(python|javascript|typescript|golang|java|c\+\+|rust)\b/i,
+    handler: (txt) => {
+      const lang = txt.match(/\b(python|javascript|typescript|golang|java|c\+\+|rust)\b/i);
+      return lang ? `${lang[0].toUpperCase() === "C++" ? "C++" : lang[0].charAt(0).toUpperCase() + lang[0].slice(1).toLowerCase()} Programming` : "Coding & Dev";
+    }
+  },
+  {
+    regex: /\b(weather|temperature|forecast|rain|climate)\b/i,
+    handler: (txt) => {
+      const city = txt.replace(/^(what(\x27s|\x20is)\s+the\s+weather\s+(like\s+)?in|weather\s+in|forecast\s+for)\s+/i, "").trim().split(/\s+/)[0];
+      return city ? `${city.charAt(0).toUpperCase() + city.slice(1).toLowerCase()} Weather` : "Weather Forecast";
+    }
+  }
+];
+
 const STOP_WORDS = new Set([
   "a", "an", "the", "to", "for", "in", "on", "with", "about", "how", "what",
   "why", "does", "do", "did", "is", "are", "was", "were", "and", "or", "of",
   "can", "could", "should", "would", "help", "me", "you", "i", "it", "this",
-  "that", "these", "those"
+  "that", "these", "those", "my", "your", "best", "some", "any", "all", "few",
+  "more", "much", "many", "tell", "explain", "give", "write", "create", "make",
+  "show", "debug", "please", "simply", "clearly", "briefly", "step", "guide",
+  "top", "list", "recommend", "suggest", "good", "great"
 ]);
-
-function cleanPrompt(text) {
-  if (!text) return "";
-  let clean = text
-    .replace(/^(\s*hello|\s*hi|\s*hey|\s*good morning|\s*good evening)[,!]?\s*/i, "")
-    .replace(/^(can you|could you|please|tell me about|explain|how to|what is|how do i|debug|help me with|why does|why is|write a|create a|give me|what about|how about|what are|does|is|how|summarize|compare|brainstorm|design|build|make|show me)\s+/i, "")
-    .replace(/\b(simply|in detail|step by step|briefly|clearly|for beginners|please)\b/gi, "")
-    .replace(/[?!.:,;"'(){}[\]]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  return clean || text.trim();
-}
 
 function titleCase(str) {
   return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -180,44 +208,38 @@ function synthesizeChatTitle(messages) {
   const userMessages = messages.filter((m) => m.sender === "user").map((m) => m.text);
   if (userMessages.length === 0) return "New Chat";
 
-  const firstClean = cleanPrompt(userMessages[0]);
-  const firstWords = firstClean
-    .split(/\s+/)
-    .filter((w) => w && !STOP_WORDS.has(w.toLowerCase()) && !/^\d+$/.test(w));
+  const firstText = userMessages[0].trim();
+  const latestText = userMessages[userMessages.length - 1].trim();
 
-  // Single turn: pick 2 to 3 substantive topic words
-  if (userMessages.length === 1 || firstWords.length >= 2) {
-    if (userMessages.length === 1) {
-      const source = firstWords.length >= 2 ? firstWords : firstClean.split(/\s+/).filter(Boolean);
-      const chosen = source.slice(0, Math.min(Math.max(source.length, 2), 4));
-      return titleCase(chosen.join(" ")) || "New Chat";
+  // Check intent patterns on latest text first, then initial text
+  for (const pattern of INTENT_PATTERNS) {
+    if (pattern.regex.test(latestText)) {
+      return pattern.handler ? pattern.handler(latestText) : pattern.title;
+    }
+  }
+  for (const pattern of INTENT_PATTERNS) {
+    if (pattern.regex.test(firstText)) {
+      return pattern.handler ? pattern.handler(firstText) : pattern.title;
     }
   }
 
-  // Multi-turn evolution: preserve core topic (1-2 words) + combine recent aspect (1-2 words)
-  const latestClean = cleanPrompt(userMessages[userMessages.length - 1]);
-  const latestWords = latestClean
+  // Fallback: extract key nouns (strictly 2 to 3 meaningful words)
+  const clean = firstText
+    .replace(/[?!.:,;"'(){}[\]/\\<>=+*^%$#@!~`]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const words = clean
     .split(/\s+/)
-    .filter((w) => w && !STOP_WORDS.has(w.toLowerCase()) && !/^\d+$/.test(w));
+    .filter((w) => w.length > 1 && !STOP_WORDS.has(w.toLowerCase()) && !/^\d+$/.test(w));
 
-  const rootWords = (firstWords.length >= 2 ? firstWords : firstClean.split(/\s+/).filter(Boolean)).slice(0, 2);
-  const rootStr = rootWords.join(" ").toLowerCase();
-
-  const newAspects = latestWords.filter((w) => !rootStr.includes(w.toLowerCase())).slice(0, 2);
-
-  let finalWords = [];
-  if (newAspects.length > 0) {
-    finalWords = [...rootWords.slice(0, Math.min(2, 4 - newAspects.length)), ...newAspects];
-  } else {
-    finalWords = latestWords.length >= 2 ? latestWords.slice(0, 3) : rootWords.slice(0, 3);
+  if (words.length >= 2) {
+    return titleCase(words.slice(0, 3).join(" "));
+  } else if (words.length === 1) {
+    return `${titleCase(words[0])} Discussion`;
   }
 
-  if (finalWords.length < 2 && firstWords.length >= 2) {
-    finalWords = firstWords.slice(0, 3);
-  }
-
-  const result = titleCase(finalWords.slice(0, 4).join(" "));
-  return result || "New Chat";
+  return "General Chat";
 }
 
 const STORAGE_KEY = "mverse_chats_v2";
@@ -257,13 +279,17 @@ function Chat() {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const location = useLocation();
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
   const loadingRef = useRef(false);
   const initialPromptProcessed = useRef(false);
+  const chatsRef = useRef(chats);
+
+  useEffect(() => {
+    chatsRef.current = chats;
+  }, [chats]);
 
   // Auto-expanding textarea height adjustment (1 line up to 160px)
   const adjustTextareaHeight = useCallback(() => {
@@ -362,10 +388,22 @@ function Chat() {
     setSidebarOpen(false);
   }, []);
 
-  // Stable send prompt function
+  // Stable send prompt function with conversational memory
   const sendPrompt = useCallback(async (promptText) => {
     const textToSend = typeof promptText === "string" ? promptText.trim() : "";
     if (!textToSend || loadingRef.current) return;
+
+    // Retrieve recent conversation history for memory and context connection
+    const currentChat =
+      (chatsRef.current || []).find((c) => c.id === activeChatId) ||
+      (chatsRef.current || [])[0];
+    const priorHistory = (currentChat?.messages || [])
+      .filter((m) => m && m.text && !m.text.startsWith("**Unable to reach backend service"))
+      .slice(-10)
+      .map((m) => ({
+        sender: m.sender,
+        text: m.text,
+      }));
 
     const userMessage = { sender: "user", text: textToSend };
     loadingRef.current = true;
@@ -391,17 +429,36 @@ function Chat() {
     try {
       const response = await axios.post(`${backendUrl}/api/llm`, {
         input: textToSend,
+        history: priorHistory,
       });
 
       const botText = response.data?.text || "No response received from mVerse.";
       const assistantMessage = { sender: "assistant", text: botText };
 
-      // Update active chat with assistant response and re-evaluate title
+      // Update active chat with assistant response and smart title
       setChats((prev) =>
         prev.map((chat) => {
           if (chat.id === activeChatId) {
             const updatedMessages = [...chat.messages, assistantMessage];
             const updatedTitle = synthesizeChatTitle(updatedMessages);
+
+            // Optional background AI title refinement (non-blocking)
+            axios
+              .post(`${backendUrl}/api/llm/title`, {
+                messages: updatedMessages,
+              })
+              .then((titleRes) => {
+                const refined = titleRes.data?.title?.trim();
+                if (refined && refined.split(/\s+/).length <= 4 && refined !== "General Chat") {
+                  setChats((current) =>
+                    current.map((c) =>
+                      c.id === activeChatId ? { ...c, title: refined } : c
+                    )
+                  );
+                }
+              })
+              .catch(() => {});
+
             return {
               ...chat,
               title: updatedTitle,

@@ -3,7 +3,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require("path");
 
+// Load .env from server directory first, fallback to root
+dotenv.config({ path: path.join(__dirname, ".env") });
 dotenv.config();
 
 const allowedOrigins = [
