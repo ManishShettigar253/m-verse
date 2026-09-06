@@ -14,7 +14,6 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  padding-top: 6rem;
 }
 
 /* ==============================================================================
@@ -304,13 +303,12 @@
   position: relative;
 }
 
-/* Chat Header - Sticky at Top */
+/* Chat Header
+   The message area is the only scrolling element. Keeping this header in the
+   flex flow prevents it from jumping under the site navbar on mobile refresh. */
 .chat-clean-header {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -641,11 +639,10 @@
   40% { transform: scale(1.1); opacity: 1; }
 }
 
-/* Prompt Bottom Bar - Sticky at Bottom */
+/* Prompt Bottom Bar */
 .chat-prompt-bottom {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
+  position: relative;
+  z-index: 1;
   padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom));
   background: rgba(14, 16, 22, 0.94);
   backdrop-filter: blur(16px);
@@ -742,11 +739,8 @@
   }
 
   .chat-clean-header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
+    position: relative;
+    z-index: 1;
     padding: 0.65rem 0.85rem;
     background: rgba(12, 14, 20, 0.98);
     border-bottom: 1px solid var(--border-subtle);

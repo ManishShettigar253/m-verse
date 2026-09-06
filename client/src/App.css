@@ -27,11 +27,15 @@
   overflow: hidden;
 }
 
+.chat-page-wrapper > .navbar-header {
+  /* Keep the site navigation in the flex layout; it must never be squeezed
+     over the chat header when mobile browser viewport chrome changes. */
+  flex: 0 0 auto;
+}
+
 .main-content.chat-main-content {
   flex: 1;
   min-height: 0;
-  height: calc(100vh - 56px);
-  height: calc(100dvh - 56px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
