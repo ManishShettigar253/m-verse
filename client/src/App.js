@@ -10,12 +10,12 @@ import "./App.css";
 
 function AppContent() {
   const location = useLocation();
-  const isChat = location.pathname === "/chat";
+  const isAppView = location.pathname === "/" || location.pathname === "/chat";
 
   return (
-    <div className={`app-wrapper ${isChat ? "chat-page-wrapper" : ""}`}>
+    <div className={`app-wrapper ${isAppView ? "chat-page-wrapper" : ""}`}>
       <Navbar />
-      <main className={`main-content ${isChat ? "chat-main-content" : ""}`}>
+      <main className={`main-content ${isAppView ? "chat-main-content" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
@@ -25,7 +25,7 @@ function AppContent() {
           <Route path="/About" element={<About />} />
         </Routes>
       </main>
-      {!isChat && <Footer />}
+      {!isAppView && <Footer />}
     </div>
   );
 }

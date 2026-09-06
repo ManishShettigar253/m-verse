@@ -1,418 +1,341 @@
-/* Home.css - Premium Modern AI Launchpad with Glassmorphic Depth & Responsive Cards */
+/* ==============================================================================
+   Home.css - Clean, Distraction-Free AI Canvas (ChatGPT / Claude / Gemini Style)
+   ============================================================================== */
 
-.home-container {
-  flex: 1;
+.home-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 56px);
+  min-height: calc(100dvh - 56px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 1.25rem 3.5rem;
-  max-width: 980px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
+  padding: 1.5rem 1.25rem 1rem;
+  background-color: var(--bg-primary);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
-/* Ethereal Ambient Radial Glow */
-.home-ambient-glow {
+/* Gemini-Style Ambient Radial Glow */
+.home-ambient-aura {
   position: absolute;
-  top: 0;
+  top: 35%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 800px;
-  height: 480px;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 650px;
+  height: 450px;
   background: radial-gradient(
-    circle at 50% 18%,
-    rgba(16, 185, 129, 0.12) 0%,
-    rgba(56, 189, 248, 0.05) 38%,
-    transparent 70%
+    circle at 50% 50%,
+    rgba(16, 185, 129, 0.08) 0%,
+    rgba(56, 189, 248, 0.05) 35%,
+    rgba(139, 92, 246, 0.03) 60%,
+    transparent 75%
   );
   pointer-events: none;
   z-index: 0;
 }
 
-/* ==============================================================================
-   HERO SECTION
-   ============================================================================== */
-.home-hero-section {
+/* Central Content Block */
+.home-content-wrap {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Header & Greeting */
+.home-header-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
-  margin-bottom: 2.5rem;
+  gap: 0.75rem;
 }
 
-.home-status-pill {
+.home-sparkle-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.72rem;
+  gap: 0.4rem;
+  font-size: 0.75rem;
   font-family: var(--font-mono);
   color: var(--accent-mint-light);
   background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(16, 185, 129, 0.22);
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
-  margin-bottom: 1.25rem;
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.1);
 }
 
-.home-status-dot {
+.home-sparkle-icon {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--accent-mint);
+}
+
+.home-main-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #f1f3f7;
+  margin: 0;
+  line-height: 1.15;
+}
+
+/* ==============================================================================
+   THE CORE INPUT BOX (ChatGPT & Claude Style Container)
+   ============================================================================== */
+.home-input-box {
+  width: 100%;
+  background: rgba(26, 30, 39, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 0.875rem 1rem 0.65rem;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-sizing: border-box;
+}
+
+.home-input-box:focus-within {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.home-prompt-textarea {
+  width: 100%;
+  min-height: 28px;
+  max-height: 160px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #f1f3f7;
+  padding: 0.2rem 0.25rem 0.4rem;
+  box-sizing: border-box;
+}
+
+.home-prompt-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Inner Toolbar */
+.home-input-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+}
+
+.home-toolbar-left,
+.home-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Tool buttons (+ and mic) */
+.home-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.home-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.home-tool-btn.listening {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  animation: pulseMic 1.5s infinite;
+}
+
+@keyframes pulseMic {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.check-icon {
+  color: var(--accent-mint);
+}
+
+/* Model Badge Pill */
+.home-model-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  user-select: none;
+}
+
+.home-model-badge .model-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background-color: var(--accent-mint);
-  box-shadow: 0 0 8px var(--accent-mint);
-  animation: pulseDot 2s infinite;
+  box-shadow: 0 0 6px var(--accent-mint);
 }
 
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.85); }
-}
-
-.home-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, 6.5vw, 3.8rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: #ffffff;
-  margin: 0 0 0.75rem;
-  line-height: 1.1;
-  max-width: 720px;
-}
-
-.home-hero-gradient {
-  background: linear-gradient(135deg, #ffffff 30%, var(--accent-mint-light) 75%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.home-hero-subtitle {
-  font-size: clamp(0.9rem, 2.5vw, 1.08rem);
-  color: var(--text-secondary);
-  margin: 0 auto 2.25rem;
-  max-width: 540px;
-  line-height: 1.55;
-}
-
-/* ==============================================================================
-   COMMAND BAR INPUT
-   ============================================================================== */
-.home-command-card {
-  width: 100%;
-  max-width: 620px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.home-command-form {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  background: rgba(18, 21, 29, 0.88);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-full);
-  padding: 0.4rem 0.5rem 0.4rem 1.1rem;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  transition: all var(--transition-fast);
-}
-
-.home-command-form:focus-within {
-  border-color: var(--accent-mint);
-  box-shadow: 0 0 0 1px var(--accent-mint), 0 16px 36px rgba(16, 185, 129, 0.12);
-}
-
-.home-command-icon {
-  color: var(--accent-mint-light);
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.home-command-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: #ffffff;
-  padding: 0.45rem 0;
-  min-width: 0;
-}
-
-.home-command-input::placeholder {
-  color: var(--text-muted);
-}
-
-.home-command-submit {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #ffffff;
-  color: #090a0f;
+/* Send Button */
+.home-send-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  transition: all var(--transition-fast);
-  cursor: pointer;
-  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 1.1rem;
+  cursor: not-allowed;
+  transition: all 0.2s ease;
 }
 
-.home-command-submit:hover:not(:disabled) {
+.home-send-btn.active {
+  background: #ffffff;
+  color: #0d0f14;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.home-send-btn.active:hover {
+  transform: scale(1.05);
   background: var(--accent-mint-light);
+}
+
+/* ==============================================================================
+   ACTION CHIPS (Directly Below Input - ChatGPT Style)
+   ============================================================================== */
+.home-action-chips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.home-action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.home-action-chip:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
-.home-command-submit:active:not(:disabled) {
-  transform: scale(0.92);
-}
-
-.home-command-submit:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
-
-.home-command-hints {
+.home-action-chip .chip-icon {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
 }
 
-.home-command-hints strong {
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.hint-divider {
-  color: var(--border-subtle);
+.home-action-chip:hover .chip-icon {
+  color: var(--accent-mint-light);
 }
 
 /* ==============================================================================
-   QUICK LAUNCH CARDS SECTION
+   BOTTOM MICRO DISCLAIMER
    ============================================================================== */
-.home-cards-section {
-  position: relative;
-  z-index: 1;
+.home-bottom-disclaimer {
   width: 100%;
-  margin-bottom: 3rem;
-}
-
-.home-cards-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 0 0.25rem;
-}
-
-.home-cards-label {
-  font-size: 0.76rem;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-
-.home-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.85rem;
-  width: 100%;
-}
-
-.home-starter-card {
-  background: rgba(18, 21, 29, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.1rem 1.15rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-align: left;
-  position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.home-starter-card:hover {
-  background: rgba(25, 29, 40, 0.8);
-  border-color: rgba(16, 185, 129, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 15px rgba(16, 185, 129, 0.08);
-}
-
-.home-starter-card:active {
-  transform: scale(0.985);
-}
-
-.home-starter-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.65rem;
-}
-
-.home-starter-icon-box {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-xs);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle);
-  color: var(--accent-mint-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.05rem;
-  transition: all var(--transition-fast);
-}
-
-.home-starter-card:hover .home-starter-icon-box {
-  background: rgba(16, 185, 129, 0.12);
-  border-color: rgba(16, 185, 129, 0.35);
-}
-
-.home-starter-tag {
-  font-size: 0.68rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-subtle);
-  padding: 0.1rem 0.45rem;
-  border-radius: 4px;
-}
-
-.home-starter-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 0.35rem;
-  line-height: 1.3;
-}
-
-.home-starter-desc {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.home-starter-footer {
-  margin-top: 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 0.6rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.home-starter-action {
-  font-size: 0.72rem;
-  font-family: var(--font-mono);
-  color: var(--accent-mint-light);
-  font-weight: 500;
-}
-
-.home-starter-arrow {
-  font-size: 0.85rem;
-  color: var(--accent-mint-light);
-  transition: transform var(--transition-fast);
-}
-
-.home-starter-card:hover .home-starter-arrow {
-  transform: translateX(3px);
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0.5rem 0;
+  letter-spacing: 0.01em;
 }
 
 /* ==============================================================================
-   FEATURES / HIGHLIGHTS ROW
+   MOBILE-FIRST RESPONSIVENESS
    ============================================================================== */
-.home-features-row {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-subtle);
-}
+@media (max-width: 640px) {
+  .home-canvas {
+    padding: 1rem 1rem 0.75rem;
+  }
 
-.home-feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  text-align: left;
-}
+  .home-content-wrap {
+    gap: 1.25rem;
+  }
 
-.home-feature-icon {
-  font-size: 1.25rem;
-  color: var(--accent-mint-light);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .home-main-greeting {
+    font-size: 1.85rem;
+  }
 
-.home-feature-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
+  .home-input-box {
+    border-radius: 20px;
+    padding: 0.75rem 0.85rem 0.55rem;
+  }
 
-.home-feature-text strong {
-  font-size: 0.84rem;
-  color: #ffffff;
-  font-weight: 600;
-}
+  .home-prompt-textarea {
+    font-size: 0.95rem;
+  }
 
-.home-feature-text span {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-}
-
-/* ==============================================================================
-   RESPONSIVE MEDIA QUERIES
-   ============================================================================== */
-@media (min-width: 640px) {
-  .home-cards-grid {
+  .home-action-chips {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .home-container {
-    padding: 3.5rem 1.5rem 4.5rem;
+    gap: 0.5rem;
   }
 
-  .home-features-row {
-    grid-template-columns: repeat(3, 1fr);
+  .home-action-chip {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    justify-content: flex-start;
+  }
+
+  .home-bottom-disclaimer {
+    font-size: 0.7rem;
   }
 }
