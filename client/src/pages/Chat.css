@@ -304,9 +304,9 @@
   position: relative;
 }
 
-/* Chat Header - Sticky at Top */
+/* Chat Header - Fixed at Top */
 .chat-clean-header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -743,7 +743,7 @@
   }
 
   .chat-clean-header {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
