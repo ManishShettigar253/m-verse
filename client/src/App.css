@@ -17,3 +17,21 @@
   width: 100%;
   position: relative;
 }
+
+/* Chat Page Special Fixed App-Like Height: No Whole-Window Bounce, Sticky Headers & Docked Input */
+.app-wrapper.chat-page-wrapper {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.main-content.chat-main-content {
+  flex: 1;
+  height: calc(100vh - 56px);
+  height: calc(100dvh - 56px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

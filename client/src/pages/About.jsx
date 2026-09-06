@@ -23,15 +23,6 @@ const About = () => {
     portfolio: "https://manishshettigar253.github.io/Manish_Portfolio/",
   };
 
-  const competencies = [
-    "Fullstack Systems",
-    "React.js",
-    "Node.js & Express",
-    "LLM Architecture",
-    "REST APIs",
-    "Cloud & Vercel",
-  ];
-
   return (
     <div className="about-clean-page">
       <div className="about-header-minimal">
@@ -111,14 +102,6 @@ const About = () => {
             </a>
           )}
         </div>
-      </div>
-
-      <div className="about-tech-summary">
-        {competencies.map((item, idx) => (
-          <span key={idx} className="about-tech-pill">
-            {item}
-          </span>
-        ))}
       </div>
     </div>
   );
