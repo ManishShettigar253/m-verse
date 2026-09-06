@@ -14,7 +14,7 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  padding-top: env(safe-area-inset-top, 4rem);
+  padding-top: 6rem;
 }
 
 /* ==============================================================================
@@ -304,9 +304,9 @@
   position: relative;
 }
 
-/* Chat Header - Fixed at Top */
+/* Chat Header - Sticky at Top */
 .chat-clean-header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -320,7 +320,6 @@
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
-  will-change: transform;
 }
 
 .chat-header-left {
@@ -743,7 +742,7 @@
   }
 
   .chat-clean-header {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -753,7 +752,6 @@
     border-bottom: 1px solid var(--border-subtle);
     flex-shrink: 0;
     width: 100%;
-    will-change: transform;
   }
 
   .chat-sidebar-toggle-btn {
