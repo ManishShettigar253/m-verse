@@ -281,7 +281,7 @@ function Chat() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const messagesEndRef = useRef(null);
+  const chatScrollAreaRef = useRef(null);
   const textareaRef = useRef(null);
   const loadingRef = useRef(false);
   const chatsRef = useRef(chats);
@@ -547,7 +547,16 @@ function Chat() {
   }, [location.state, location.pathname, navigate, sendPrompt]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Do not use scrollIntoView here: on Android Chrome it can also scroll the
+    // page itself on refresh, which puts the chat header behind the main nav.
+    // Only the message panel should ever be moved.
+    if (messages.length === 0 && !loading) return;
+
+    const scrollArea = chatScrollAreaRef.current;
+    scrollArea?.scrollTo({
+      top: scrollArea.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, loading]);
 
   const starters = [
@@ -674,7 +683,7 @@ function Chat() {
           </div>
 
           {/* Message Stream */}
-          <div className="chat-scroll-area">
+          <div className="chat-scroll-area" ref={chatScrollAreaRef}>
             {messages.length === 0 ? (
               <div className="chat-empty-view">
                 <h3>What would you like to explore?</h3>
@@ -720,8 +729,6 @@ function Chat() {
                 </div>
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Input Bar */}
